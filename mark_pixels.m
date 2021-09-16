@@ -47,4 +47,8 @@ function marked_image = mark_pixels(image_rgb,channel,lower_lim,upper_lim)
 
     %close progress bar
     close(progress_bar)
+    
+    %display result in new figure window
+    figure
+    imshow(marked_image)
 end
