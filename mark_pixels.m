@@ -54,11 +54,11 @@ function marked_image = mark_pixels(image_rgb,channel,lower_lim,upper_lim)
     
     switch channel
         case 1
-            ch_name = "HUE"
+            ch_name = "HUE";
         case 2
-            ch_name = "SATURATION"
+            ch_name = "SATURATION";
         case 3
-            ch_name = "VALUE"
+            ch_name = "VALUE";
     end
     
     title(ch_name+" pixels in range "+string(lower_lim)+" to "+string(upper_lim))
