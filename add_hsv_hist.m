@@ -6,6 +6,6 @@ function add_hsv_hist(imgs,channel,fignum,color)
     bins = 100+( (channel<2)*260 );
     for i=1:length(imgs)
         hold on
-        histogram(imgs{i}(:,:,channel)*bins,bins+1,'DisplayStyle','Stairs','EdgeColor',color)
+        histogram(imgs{i}(:,:,channel)*bins,bins,'DisplayStyle','Stairs','EdgeColor',color)
     end
 end
