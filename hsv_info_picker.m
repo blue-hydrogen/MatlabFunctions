@@ -52,7 +52,7 @@ function hsv_info_picker(abs_directory, days, channel)
             subplot(4,5,img_displayed+1)
 
             %display histogram of specified channel
-            histogram(img(:,:,channel)*bins,bins,'DisplayStyle','Stairs','EdgeColor','r')
+            histogram(img(:,:,channel)*bins,bins+1,'DisplayStyle','Stairs','EdgeColor','r')
             img_displayed = img_displayed+1;
             title(strcat(cat," - ",image_names(img_index).name))
 

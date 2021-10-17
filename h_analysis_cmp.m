@@ -6,8 +6,8 @@ function h_analysis_cmp(imgs1,imgs2,channel)
     bins = 100+( (channel<2)*260 );
     
     for i=1:L2
-        histogram(imgs1{i}(:,:,channel)*bins,bins,'DisplayStyle','Stairs','EdgeColor','r')
-        histogram(imgs2{i}(:,:,channel)*bins,bins,'DisplayStyle','Stairs','EdgeColor','b')
+        histogram(imgs1{i}(:,:,channel)*bins,bins+1,'DisplayStyle','Stairs','EdgeColor','r')
+        histogram(imgs2{i}(:,:,channel)*bins,bins+1,'DisplayStyle','Stairs','EdgeColor','b')
     end
     
     title("hue cmp of g1 and g2")
