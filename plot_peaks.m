@@ -41,7 +41,7 @@ function peak_points = plot_peaks(hsv,channel,steps,sma_period)
     peak_y = 0;
     
     
-    function marked = identify_avg(x1,x2,y1,y2,avg)
+    function marked = identify_avg(x2_index,x1,x2,y1,y2,avg)
         %marked is boolean value that will indicate if marking has been
         %done on the x,y point. it is the return value of this (identify_avg) function
         marked = 0;
@@ -58,7 +58,7 @@ function peak_points = plot_peaks(hsv,channel,steps,sma_period)
                 plot(x1,y1,'r^','LineWidth',3)
                 
                 %save coordinate to set reference of end point 
-                peak_x = x1;
+                peak_x = x2_index;
                 peak_y = y1;
                 
                 %mark second coordinate of the slope and add label
@@ -88,7 +88,7 @@ function peak_points = plot_peaks(hsv,channel,steps,sma_period)
                     text(x2,y2+0.0012,string(avg),'FontSize',7)                
 
                     %save range of peak_points
-                    peak_points = [peak_points;peak_x x2];
+                    peak_points = [peak_points;peak_x x2_index];
                     
                     %invert finding_peak after marking
                     finding_peak = ~finding_peak;
@@ -100,7 +100,8 @@ function peak_points = plot_peaks(hsv,channel,steps,sma_period)
     
     %calculate and slope or rate of change in first index of Values
     x1 = edges(1);
-    x2 = edges(2);
+    x2_index = 2;
+    x2 = edges(x2_index);
     y1 = 0;
     y2 = Values(1);
     
@@ -111,7 +112,7 @@ function peak_points = plot_peaks(hsv,channel,steps,sma_period)
     
     %if slope is not identified as starting or end point in indentify_avg
     %then it will be marked in this block of 'if statement'
-    if(identify_avg(x1,x2,y1,y2,avg)==0)
+    if(identify_avg(x2_index,x1,x2,y1,y2,avg)==0)
         
         %mark slope with red plus sign, then display value of slope
         plot(x2,y2,'r+')
@@ -134,14 +135,15 @@ function peak_points = plot_peaks(hsv,channel,steps,sma_period)
 %         end
         
         x1 = edges(indexes(i)+1);
-        x2 = edges(indexes(i+1)+1);
+        x2_index = indexes(i+1)+1;
+        x2 = edges(x2_index);
         y1 = Values(indexes(i));
         y2 = Values(indexes(i+1));
             
         %get average rate of change
         avg = avg_roc(x1,x2,y1,y2);
 
-        if(identify_avg(x1,x2,y1,y2,avg)==0)
+        if(identify_avg(x2_index,x1,x2,y1,y2,avg)==0)
             %mark the point in histogram
             plot(x2,y2,'r+','LineWidth',1)
 
@@ -156,7 +158,7 @@ function peak_points = plot_peaks(hsv,channel,steps,sma_period)
 %     end
     
     if( finding_peak==0 )
-        peak_points = [peak_points;peak_x edges(end)];
+        peak_points = [peak_points;peak_x length(edges)];
         plot(edges(end),Values(end),'rv','LineWidth',3)
     end
 end
