@@ -4,7 +4,7 @@ function peak_points = plot_peaks(hsv,channel,steps,sma_period)
     %sma_period is simple moving average period
 
     peak_points = [];
-
+    
     %create a figure
     figure
     
@@ -17,6 +17,7 @@ function peak_points = plot_peaks(hsv,channel,steps,sma_period)
     
     %display original histogram, color blue
     histogram(hsv(:,:,channel),'DisplayStyle','Stairs','EdgeColor','b','Normalization','probability');
+    hold on
     
     %copy Values in temporary variable
     %temp will be used as reference for simple moving average
@@ -49,8 +50,8 @@ function peak_points = plot_peaks(hsv,channel,steps,sma_period)
         %spike up (peak) of the slope
         if(finding_peak)
             
-            %if slope is above 0.02 then it is a starting point
-            if(avg>0.02)
+            %if slope is above 0.005 then it is a starting point
+            if(avg>0.005)
                 
                 %mark the starting point of spike up
                 %marked with red upright triangle
@@ -74,8 +75,8 @@ function peak_points = plot_peaks(hsv,channel,steps,sma_period)
         else
             
             %we specified that a slope within the range of
-            % -0.02 to +0.02 is a flatline or almost flatline
-            if( (avg>=-0.02) && (avg<=0.02)   )
+            % -0.005 to +0.005 is a flatline or almost flatline
+            if( (avg>=-0.005) && (avg<=0.005)   )
                 
                 %if almost flatline is identified then
                 %check if the current coordinate is near the 
@@ -127,7 +128,11 @@ function peak_points = plot_peaks(hsv,channel,steps,sma_period)
     
     
     for i=1:length(indexes)-1
-
+        
+%         if( size(peak_points,1)==2 )
+%             return
+%         end
+        
         x1 = edges(indexes(i)+1);
         x2 = edges(indexes(i+1)+1);
         y1 = Values(indexes(i));
@@ -135,13 +140,23 @@ function peak_points = plot_peaks(hsv,channel,steps,sma_period)
             
         %get average rate of change
         avg = avg_roc(x1,x2,y1,y2);
-        
+
         if(identify_avg(x1,x2,y1,y2,avg)==0)
             %mark the point in histogram
-            plot(x2,y2,'r+')
+            plot(x2,y2,'r+','LineWidth',1)
 
             %print label on top of the marking
             text(x2,y2+0.0012,string(avg),'FontSize',7)
         end
+    end
+    
+%     if( finding_peak==0 && size(peak_points,1)<2 )
+%         peak_points = [peak_points;peak_x edges(end)];
+%         plot(edges(end),Values(end),'r^','LineWidth',3)
+%     end
+    
+    if( finding_peak==0 )
+        peak_points = [peak_points;peak_x edges(end)];
+        plot(edges(end),Values(end),'rv','LineWidth',3)
     end
 end
